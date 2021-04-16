@@ -25,7 +25,9 @@
     "webpack-dev-server": "^3.11.2"
   },
   "devDependencies": {
+    "@dr.pogodin/babel-plugin-react-css-modules": "^6.0.11",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
+    "postcss": "^8.2.10",
     "react-refresh": "^0.9.0"
   }
 }

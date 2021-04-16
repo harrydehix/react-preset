@@ -36,12 +36,28 @@ module.exports = {
                                 isDevelopment &&
                                     require.resolve("react-refresh/babel"),
                             ].filter(Boolean),
+                            cacheDirectory: true,
                         },
                     },
                 ],
             },
             {
-                test: /\.css$/,
+                test: /\.module.css$/i,
+                use: [
+                    "style-loader",
+                    {
+                        loader: "css-loader",
+                        options: {
+                            modules: {
+                                localIdentName:
+                                    "[path]___[name]__[local]___[hash:base64:5]", // This pattern matches with the default in `babel-plugin-react-css-modules`
+                            },
+                        },
+                    },
+                ],
+            },
+            {
+                test: /[^m][^o][^d][^u][^l][^e]\.css$/i,
                 use: ["style-loader", "css-loader"],
             },
             {
