@@ -1,6 +1,10 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+const webpack = require("webpack");
+const isDevelopment = process.env.NODE_ENV !== "production";
+
 module.exports = {
     entry: "./src/index.js",
     output: {
@@ -11,17 +15,30 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: "./src/index.html",
         }),
-    ],
+        isDevelopment && new webpack.HotModuleReplacementPlugin(),
+        isDevelopment && new ReactRefreshWebpackPlugin(),
+    ].filter(Boolean),
     resolve: {
         modules: [__dirname, "src", "node_modules"],
         extensions: ["*", ".js", ".jsx", ".tsx", ".ts"],
     },
+    mode: isDevelopment ? "development" : "production",
     module: {
         rules: [
             {
                 test: /\.jsx?$/,
                 exclude: /node_modules/,
-                loader: require.resolve("babel-loader"),
+                use: [
+                    {
+                        loader: require.resolve("babel-loader"),
+                        options: {
+                            plugins: [
+                                isDevelopment &&
+                                    require.resolve("react-refresh/babel"),
+                            ].filter(Boolean),
+                        },
+                    },
+                ],
             },
             {
                 test: /\.css$/,
